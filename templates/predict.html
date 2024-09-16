@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predict News Sentiment</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('history') }}">History</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li>Welcome, {{ current_user.username }}!</li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('login') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <h1>Predict News Sentiment</h1>
+    <form action="{{ url_for('predict') }}" method="post">
+        <label for="news_text">Enter news text:</label>
+        <textarea name="news_text" id="news_text" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Predict">
+    </form>
+    {% if result %}
+        <h2>Result: {{ result }}</h2>
+        <p>The sentiment of the news text is {{ result }}.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>History</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li>Welcome, {{ current_user.username }}!</li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <h1>History</h1>
+    <ul>
+        {% for history in histories %}
+            <li>
+                <p>Input Text: {{ history['input_text'] }}</p>
+                <p>Prediction: {{ history['prediction'] }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

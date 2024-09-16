@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Prediction</title>
+    <title>Fake News Detection</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
         .container {
-            max-width: 500px;
+            width: 600px;
             margin: 40px auto;
             padding: 20px;
             background-color: #fff;
@@ -18,74 +16,52 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-        input[type="text"] {
+        .form-control {
             width: 100%;
-            height: 40px;
             padding: 10px;
-            font-size: 16px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
         }
-        button[type="submit"] {
-            width: 100%;
-            height: 40px;
-            padding: 10px;
-            font-size: 16px;
+        .btn {
             background-color: #4CAF50;
             color: #fff;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
-        button[type="submit"]:hover {
+        .btn:hover {
             background-color: #3e8e41;
         }
         .result {
-            background-color: #f7f7f7;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .result h3 {
-            margin-top: 0;
-        }
-
-        .prediction-value {
+            font-size: 24px;
             font-weight: bold;
-            color: #337ab7;
-        }
-
-        .given-text {
-            font-size: 16px;
             color: #666;
-      }
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>News Prediction</h2>
-        <form method="post">
-            <div class="form-group">
-                <label for="news_input">Enter news text:</label>
-                <input type="text" id="news_input" name="news_input" placeholder="Enter news text">
-            </div>
-            <button type="submit">Predict</button>
+        <h2>Fake News Detection</h2>
+        <form action="/predict" method="post">
+            <textarea name="text" class="form-control" placeholder="Enter news text"></textarea>
+            <button type="submit" class="btn">Detect</button>
         </form>
-        {% if prediction %}
-            <div class="result">
-                <h3>Prediction Result</h3>
-                <p><strong>Given Text:</strong> <span class="given-text">{{ text }}</span></p>
-                <p><strong>Prediction:</strong> <span class="prediction-value">{{ prediction }}</span></p>
-            </div>
-        {% endif %}
+        <div class="result" id="result"></div>
+        <script>
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: document.querySelector('textarea').value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = `Prediction: ${data.prediction}`;
+            });
+        </script>
     </div>
 </body>
 </html>
